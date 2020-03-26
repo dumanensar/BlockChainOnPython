@@ -16,6 +16,26 @@ class Blockchain:
     def __repr__(self):
         return f'Blockchain: {self.chain}'
 
+    def __eg__(self, other):
+        return self.__dict__ == other.__dict__
+
+    def replace_chain(self, chain):
+        """
+        Replace the local chain with the incoming one if the following applies:
+        - The incoming chain is longer than the local one.
+        - The incoming chain is formatted properly.
+        """
+
+        if len(self.chain) >= len(chain):
+            raise Exception('Cannot replace. The incoming chain must be longer than the local one.')
+
+        try:
+            Blockchain.is_valid_chain(chain)
+        except Exception as e:
+            raise Exception(f'Cannot replace. The incoming chain is invalid: {e}')
+
+        self.chain = chain
+
     @staticmethod
     def is_valid_chain(chain):
         """
@@ -34,12 +54,12 @@ class Blockchain:
             raise Exception('The chain must start with the genesis block')
         
         try:
-            for index in range(1, len(chain)):
+            for index in range(1, len(chain) - 1):
                 block = chain[index]
-                last_block = chain[-1]
+                last_block = chain[index - 1]
                 Block.is_valid_block(last_block, block)            
         except Exception as e:
-            raise Exception('Blocks must be formatted correctly')
+            raise Exception(f'Blocks must be formatted correctly: {e}')
 
 
 

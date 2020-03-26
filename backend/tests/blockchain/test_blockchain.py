@@ -39,5 +39,25 @@ def test_is_valid_chain_bad_genesis(blockchain_three_blocks):
 
     with pytest.raises(Exception, match='chain must start with the genesis block'):
         Blockchain.is_valid_chain(blockchain_three_blocks.chain)
+
+def test_replace_chain(blockchain_three_blocks):
+    blockchain = Blockchain()
+    blockchain.replace_chain(blockchain_three_blocks.chain)
+    assert blockchain.chain == blockchain_three_blocks.chain
+
+def test_replace_cahin_no_longer(blockchain_three_blocks):
+    blockchain = Blockchain()
+
+    with pytest.raises(Exception, match='incoming chain must be longer than the local one'):
+        blockchain_three_blocks.replace_chain(blockchain.chain)
+
+def test_replace_cahin_invalid(blockchain_three_blocks):
+    blockchain = Blockchain()
+
+    blockchain_three_blocks.chain[0].hash = 'evil_hash'
+
+    with pytest.raises(Exception, match='incoming chain is invalid'):
+        blockchain.replace_chain(blockchain_three_blocks.chain)
+
         
 
