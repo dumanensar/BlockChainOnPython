@@ -30,7 +30,7 @@ class Blockchain:
         first_block = chain[0]
         genesis_block = Block.genesis()
 
-        if  first_block.__dict__ != genesis_block.__dict__:
+        if  first_block != genesis_block:
             raise Exception('The chain must start with the genesis block')
         
         try:

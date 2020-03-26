@@ -16,22 +16,28 @@ def test_add_block():
     assert block.data == data
     assert block.last_hash == GENESIS_DATA['hash']
 
-def test_is_valid_chain():
+@pytest.fixture
+def blockchain_three_blocks():
+    blockchain = Blockchain()
+    for i in range(3):
+        blockchain.add_block(i)
+    return blockchain
+
+
+def test_is_valid_chain(blockchain_three_blocks):
 
     with pytest.raises(Exception, match='chain must have block'):
         Blockchain.is_valid_chain([])
 
-    blockchain = Blockchain()
-    blockchain.add_block('one')
-    blockchain.chain[1].hash = 'evil_hash'
+    blockchain_three_blocks.chain[1].hash = 'evil_hash'
 
     with pytest.raises(Exception, match='must be formatted correctly'):
-        Blockchain.is_valid_chain(blockchain.chain)
+        Blockchain.is_valid_chain(blockchain_three_blocks.chain)
 
-    blockchain = Blockchain()
-    blockchain.chain[0].data = 'evil'
+def test_is_valid_chain_bad_genesis(blockchain_three_blocks):
+    blockchain_three_blocks.chain[0].data = 'evil'
 
     with pytest.raises(Exception, match='chain must start with the genesis block'):
-        Blockchain.is_valid_chain(blockchain.chain)
+        Blockchain.is_valid_chain(blockchain_three_blocks.chain)
         
 
