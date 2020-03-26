@@ -1,4 +1,5 @@
 from backend.blockchain.block import Block
+from backend.util.crypto_hash import crypto_hash
 
 class Blockchain:
     """
@@ -14,6 +15,33 @@ class Blockchain:
 
     def __repr__(self):
         return f'Blockchain: {self.chain}'
+
+    @staticmethod
+    def is_valid_chain(chain):
+        """
+        Validate the incoming chain
+        Enforce the following rules of the blockchain:
+            - the chain must start with the genesis block
+            - blocks must be formatted correctly
+        """
+        if len(chain) == 0:
+            raise Exception("The chain must have block")
+        
+        first_block = chain[0]
+        genesis_block = Block.genesis()
+
+        if  first_block.__dict__ != genesis_block.__dict__:
+            raise Exception('The chain must start with the genesis block')
+        
+        try:
+            for index in range(1, len(chain)):
+                block = chain[index]
+                last_block = chain[-1]
+                Block.is_valid_block(last_block, block)            
+        except Exception as e:
+            raise Exception('Blocks must be formatted correctly')
+
+
 
 def main():
     blockchain = Blockchain()
