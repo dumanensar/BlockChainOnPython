@@ -54,7 +54,7 @@ def test_replace_cahin_no_longer(blockchain_three_blocks):
 def test_replace_cahin_invalid(blockchain_three_blocks):
     blockchain = Blockchain()
 
-    blockchain_three_blocks.chain[0].hash = 'evil_hash'
+    blockchain_three_blocks.chain[1].hash = 'evil_hash'
 
     with pytest.raises(Exception, match='incoming chain is invalid'):
         blockchain.replace_chain(blockchain_three_blocks.chain)
