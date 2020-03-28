@@ -56,8 +56,12 @@ def test_replace_cahin_invalid(blockchain_three_blocks):
 
     blockchain_three_blocks.chain[1].hash = 'evil_hash'
 
-    with pytest.raises(Exception, match='incoming chain is invalid'):
-        blockchain.replace_chain(blockchain_three_blocks.chain)
+    for index in range(0, len(blockchain_three_blocks.chain)):
+        temp_chain = blockchain_three_blocks.chain[:]
+        temp_chain[index].hash = 'evil_hash'
+
+        with pytest.raises(Exception, match='incoming chain is invalid'):
+            blockchain.replace_chain(temp_chain)
 
         
 

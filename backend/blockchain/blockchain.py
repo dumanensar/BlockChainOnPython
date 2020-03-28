@@ -43,6 +43,17 @@ class Blockchain:
         return list(map(lambda block: block.to_json(), self.chain))
 
     @staticmethod
+    def from_json(blockchain_json):
+        """
+        Deserialize chain json into Blockchain instence
+        """
+        blockchain = Blockchain()
+        blockchain.chain = list(
+            map(lambda block_json: Block.from_json(block_json), blockchain_json)
+        )
+        return blockchain
+
+    @staticmethod
     def is_valid_chain(chain):
         """
         Validate the incoming chain
@@ -60,7 +71,7 @@ class Blockchain:
             raise Exception('The chain must start with the genesis block')
         
         try:
-            for index in range(1, len(chain) - 1):
+            for index in range(1, len(chain)):
                 block = chain[index]
                 last_block = chain[index - 1]
                 Block.is_valid_block(last_block, block)            

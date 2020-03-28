@@ -47,6 +47,13 @@ class Block:
         return self.__dict__
 
     @staticmethod
+    def from_json(block_json):
+        """
+        Desrialize block json into Block instence
+        """
+        return Block(**block_json)
+
+    @staticmethod
     def mine_block(last_block, data):
         """
         Mine a block based on given last_block and data, until a block hash
@@ -55,7 +62,7 @@ class Block:
         timestamp = time.time_ns()
         last_hash = last_block.hash
         difficulty = Block.adjust_difficulty(last_block, timestamp)
-        nonce = 0
+        nonce = 1
         hash = crypto_hash(timestamp, last_hash, data, difficulty, nonce)
 
         while hex_to_binary(hash)[0:difficulty] != '0' * difficulty:
