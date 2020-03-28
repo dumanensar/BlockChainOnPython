@@ -20,3 +20,11 @@ python3 -m pytest backend/tests
 ```
 python3 -m backend.app
 ```
+
+**Run a peer instence**
+
+Make sure to activete the virtual environment.
+
+```
+export PEER=True && python3 -m backend.app
+```

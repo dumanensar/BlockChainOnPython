@@ -2,10 +2,12 @@ import time
 from pubnub.pubnub import PubNub
 from pubnub.pnconfiguration import PNConfiguration
 from pubnub.callbacks import SubscribeCallback
+from pubnub.enums import PNReconnectionPolicy
 
 pnconfig = PNConfiguration()
 pnconfig.subscribe_key = 'sub-c-f4430e86-70e0-11ea-a7c4-5e95b827fd71'
 pnconfig.publish_key = 'pub-c-7c1a202c-cb57-434d-a1c6-b435e6fd5d01'
+pnconfig.reconnect_policy = PNReconnectionPolicy.LINEAR
 
 TEST_CHANNEL = 'TEST_CHANNEL'
 
