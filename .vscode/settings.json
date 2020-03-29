@@ -1,3 +1,7 @@
 {
-    "python.pythonPath": "blockchain-env/bin/python"
+    "python.pythonPath": "blockchain-env/bin/python",
+    "python.autoComplete.extraPaths": [
+        "blockchain-env/lib/cryptography/cryptography.py",
+        "blockchain-env/lib/flask/flask.py"
+    ],
 }
