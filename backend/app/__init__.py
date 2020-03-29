@@ -3,6 +3,7 @@ from backend.blockchain.blockchain import Blockchain
 from backend.pubsub import PubSub
 import os
 import random
+import requests
 
 app = Flask(__name__)
 blockchain = Blockchain()
@@ -25,9 +26,19 @@ def route_blockchain_mine():
     pubsub.broadcast_block(block)
     return jsonify(block.to_json())
 
-PORT = 5000
+ROOT_PORT = 5000
+PORT = ROOT_PORT
 
 if os.environ.get('PEER') == 'True':
     PORT = random.randint(5001, 6000)
+
+    result = requests.get(f'http://localhost:{ROOT_PORT}/blockchain')
+    result_blockchain = Blockchain.from_json(result.json())
+
+    try:
+        blockchain.replace_chain(result_blockchain.chain)
+        print('\n -- blockchain is synced.')
+    except Exception as e:
+        print(f' -- error syncronizing. {e}')
 
 app.run(port=PORT)
